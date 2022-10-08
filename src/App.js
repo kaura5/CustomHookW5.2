@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Header from './components/Header';
+import useLocalStorage from './hooks/useLocalStorage';
+import JokeCard from './components/JokeCard';
 
 function App() {
+
+  const names = ["Will", "Alex", "Jasreet"];
+
+  const [list, setList] = useLocalStorage("MAD9135Class", names);
+
+  function handleSubmit(ev) {
+    ev.preventDefault();
+    console.log(ev.target[0].value);
+    setList(list.concat(ev.target[0].value));
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header />
+      {list.map((item) => (
+        <p key={item}>{item}</p>
+      ))}
+
+      <form onSubmit={handleSubmit}>
+        <input type="text" />
+        <button type="submit">Save</button>
+      </form>
+      <JokeCard />
     </div>
   );
 }
